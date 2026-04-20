@@ -1,5 +1,4 @@
 import logging
-import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application, CommandHandler, CallbackQueryHandler,
@@ -9,9 +8,8 @@ from telegram.ext import (
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-TOKEN = os.environ.get("BOT_TOKEN")
+TOKEN = "8629042091:AAHeUPC8dXykOxuSdT9zfxodi7U-sWgMZ8E"
 
-# States
 (
     MAIN_MENU,
     WAIT_A, WAIT_B,
@@ -115,9 +113,7 @@ async def m_time_dist_pace(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query; await q.answer()
     context.user_data["mode"] = "time_dist_pace"
     await q.edit_message_text(
-        "⏱ *Время + дистанция → Темп*\n\n"
-        "Шаг 1 из 2 — введи дистанцию в км\n"
-        "_Например: 10 или 21,1_",
+        "⏱ *Время + дистанция → Темп*\n\nШаг 1 из 2 — введи дистанцию в км\n_Например: 10 или 21,1_",
         parse_mode="Markdown", reply_markup=back_kb()
     )
     return WAIT_A
@@ -129,9 +125,7 @@ async def m_time_dist_pace_b(update: Update, context: ContextTypes.DEFAULT_TYPE)
         return WAIT_A
     context.user_data["val_a"] = dist
     await update.message.reply_text(
-        f"Дистанция: *{fmt_distance(dist)}* ✅\n\n"
-        "Шаг 2 из 2 — введи время финиша *Ч:ММ* или *ЧЧ:ММ*\n"
-        "_Например: 1:02 или 0:45_",
+        f"Дистанция: *{fmt_distance(dist)}* ✅\n\nШаг 2 из 2 — введи время финиша *Ч:ММ* или *ЧЧ:ММ*\n_Например: 1:02 или 0:45_",
         parse_mode="Markdown", reply_markup=back_kb()
     )
     return WAIT_B
@@ -145,11 +139,7 @@ async def m_time_dist_pace_calc(update: Update, context: ContextTypes.DEFAULT_TY
     pace_s = secs / dist
     kmh = 3600 / pace_s
     await update.message.reply_text(
-        f"✅ *Результат*\n\n"
-        f"🏃 Дистанция: *{fmt_distance(dist)}*\n"
-        f"⏱ Время: *{fmt_time(secs)}*\n\n"
-        f"📌 Темп: *{fmt_pace(pace_s)}*\n"
-        f"📌 Скорость: *{fmt_kmh(kmh)}*",
+        f"✅ *Результат*\n\n🏃 Дистанция: *{fmt_distance(dist)}*\n⏱ Время: *{fmt_time(secs)}*\n\n📌 Темп: *{fmt_pace(pace_s)}*\n📌 Скорость: *{fmt_kmh(kmh)}*",
         parse_mode="Markdown", reply_markup=main_kb()
     )
     return MAIN_MENU
@@ -158,9 +148,7 @@ async def m_dist_pace_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query; await q.answer()
     context.user_data["mode"] = "dist_pace_time"
     await q.edit_message_text(
-        "📏 *Дистанция + темп → Время финиша*\n\n"
-        "Шаг 1 из 2 — введи дистанцию в км\n"
-        "_Например: 42,2_",
+        "📏 *Дистанция + темп → Время финиша*\n\nШаг 1 из 2 — введи дистанцию в км\n_Например: 42,2_",
         parse_mode="Markdown", reply_markup=back_kb()
     )
     return WAIT_A
@@ -172,9 +160,7 @@ async def m_dist_pace_time_b(update: Update, context: ContextTypes.DEFAULT_TYPE)
         return WAIT_A
     context.user_data["val_a"] = dist
     await update.message.reply_text(
-        f"Дистанция: *{fmt_distance(dist)}* ✅\n\n"
-        "Шаг 2 из 2 — введи темп *ММ:СС*\n"
-        "_Например: 5:30_",
+        f"Дистанция: *{fmt_distance(dist)}* ✅\n\nШаг 2 из 2 — введи темп *ММ:СС*\n_Например: 5:30_",
         parse_mode="Markdown", reply_markup=back_kb()
     )
     return WAIT_B
@@ -188,11 +174,7 @@ async def m_dist_pace_time_calc(update: Update, context: ContextTypes.DEFAULT_TY
     total = int(pace_s * dist)
     kmh = 3600 / pace_s
     await update.message.reply_text(
-        f"✅ *Результат*\n\n"
-        f"🏃 Дистанция: *{fmt_distance(dist)}*\n"
-        f"📌 Темп: *{fmt_pace(pace_s)}*\n\n"
-        f"⏱ Время финиша: *{fmt_time(total)}*\n"
-        f"📌 Скорость: *{fmt_kmh(kmh)}*",
+        f"✅ *Результат*\n\n🏃 Дистанция: *{fmt_distance(dist)}*\n📌 Темп: *{fmt_pace(pace_s)}*\n\n⏱ Время финиша: *{fmt_time(total)}*\n📌 Скорость: *{fmt_kmh(kmh)}*",
         parse_mode="Markdown", reply_markup=main_kb()
     )
     return MAIN_MENU
@@ -213,9 +195,7 @@ async def m_kmh_pace_calc(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return WAIT_A
     pace_s = 3600 / kmh
     await update.message.reply_text(
-        f"✅ *Результат*\n\n"
-        f"🚀 Скорость: *{fmt_kmh(kmh)}*\n"
-        f"📌 Темп: *{fmt_pace(pace_s)}*",
+        f"✅ *Результат*\n\n🚀 Скорость: *{fmt_kmh(kmh)}*\n📌 Темп: *{fmt_pace(pace_s)}*",
         parse_mode="Markdown", reply_markup=main_kb()
     )
     return MAIN_MENU
@@ -236,9 +216,7 @@ async def m_pace_kmh_calc(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return WAIT_A
     kmh = 3600 / pace_s
     await update.message.reply_text(
-        f"✅ *Результат*\n\n"
-        f"📌 Темп: *{fmt_pace(pace_s)}*\n"
-        f"🚀 Скорость: *{fmt_kmh(kmh)}*",
+        f"✅ *Результат*\n\n📌 Темп: *{fmt_pace(pace_s)}*\n🚀 Скорость: *{fmt_kmh(kmh)}*",
         parse_mode="Markdown", reply_markup=main_kb()
     )
     return MAIN_MENU
@@ -279,10 +257,7 @@ async def m_lap_select(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lap_t = int(pace_s * dist)
     label = f"{int(dist * 1000)} м" if dist < 1 else fmt_distance(dist)
     await q.edit_message_text(
-        f"✅ *Результат*\n\n"
-        f"🔄 Круг: *{label}*\n"
-        f"📌 Темп: *{fmt_pace(pace_s)}*\n\n"
-        f"⏱ Время на круг: *{fmt_time(lap_t)}*",
+        f"✅ *Результат*\n\n🔄 Круг: *{label}*\n📌 Темп: *{fmt_pace(pace_s)}*\n\n⏱ Время на круг: *{fmt_time(lap_t)}*",
         parse_mode="Markdown", reply_markup=main_kb()
     )
     return MAIN_MENU
@@ -296,10 +271,7 @@ async def m_lap_custom_dist(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lap_t = int(pace_s * dist)
     label = f"{int(dist * 1000)} м" if dist < 1 else fmt_distance(dist)
     await update.message.reply_text(
-        f"✅ *Результат*\n\n"
-        f"🔄 Круг: *{label}*\n"
-        f"📌 Темп: *{fmt_pace(pace_s)}*\n\n"
-        f"⏱ Время на круг: *{fmt_time(lap_t)}*",
+        f"✅ *Результат*\n\n🔄 Круг: *{label}*\n📌 Темп: *{fmt_pace(pace_s)}*\n\n⏱ Время на круг: *{fmt_time(lap_t)}*",
         parse_mode="Markdown", reply_markup=main_kb()
     )
     return MAIN_MENU
